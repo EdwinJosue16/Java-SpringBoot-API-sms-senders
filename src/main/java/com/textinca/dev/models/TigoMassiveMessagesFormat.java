@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import com.textinca.dev.models.MessageEventForSending.SingleMessageEvent;
-
 public class TigoMassiveMessagesFormat {
 	
 	private class AddresseeListData

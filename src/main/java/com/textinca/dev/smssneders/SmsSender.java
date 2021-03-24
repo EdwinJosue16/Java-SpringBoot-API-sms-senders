@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import com.textinca.dev.models.MessageEventForSending;
-import com.textinca.dev.models.MessageEventForSending.SingleMessageEvent;
+import com.textinca.dev.models.SingleMessageEvent;
 
 @Component
 public abstract class SmsSender {

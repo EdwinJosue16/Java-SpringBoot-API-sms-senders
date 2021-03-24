@@ -8,7 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import com.textinca.dev.models.MessageEventForSending.SingleMessageEvent;
+import com.textinca.dev.models.SingleMessageEvent;
 import com.textinca.dev.models.TigoMassiveMessagesFormat;
 
 public class TigoHondurasSender extends SmsSender{

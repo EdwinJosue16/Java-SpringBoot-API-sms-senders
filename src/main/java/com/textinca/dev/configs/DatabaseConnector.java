@@ -12,7 +12,9 @@ import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;
 import org.jooq.conf.StatementType;
 import org.jooq.impl.DSL;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DatabaseConnector {
 	
 	protected String userName;
@@ -23,16 +25,13 @@ public class DatabaseConnector {
     protected Settings settings; 
     
     protected static final String TESTDB_USER = "root";
-    protected static final String TESTDB_PASS = "admin";
-    protected static final String TESTDB_URL = "jdbc:mysql://18.205.66.76:3306/testdb?useSSL=false&serverTimezone=America/Costa_Rica";
-    
-    public static final String TEXTINDB_USER = "root";
-    public static final String TEXTINDB_PASS = "admin";
-    public static final String TEXTINDB_URL = "jdbc:mysql://18.205.66.76:3306/textindb?useSSL=false&serverTimezone=America/Costa_Rica";
+    protected static final String TESTDB_PASS = "textinadmin";
+    protected static final String TESTDB_URL = "jdbc:mysql://textin-devtest.cn6t8xcmyxcw.us-east-1.rds.amazonaws.com:3306/devtest?useSSL=false&serverTimezone=America/Costa_Rica";
     
     public DatabaseConnector()
     {
-    	this.setDefaultConfigurationValues().initializeConnection();
+    	setDefaultConfigurationValues()
+    	.initializeConnection();
     }
     
     public DatabaseConnector setUserName(String userName)

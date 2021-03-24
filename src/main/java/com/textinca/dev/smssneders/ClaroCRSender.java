@@ -3,7 +3,7 @@ package com.textinca.dev.smssneders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-import com.textinca.dev.models.MessageEventForSending.SingleMessageEvent;
+import com.textinca.dev.models.SingleMessageEvent;
 
 public class ClaroCRSender extends SmsSender {
 	

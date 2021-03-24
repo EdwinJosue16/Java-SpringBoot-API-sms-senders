@@ -8,7 +8,7 @@ import com.sinch.xms.ApiConnection;
 import com.sinch.xms.SinchSMSApi;
 import com.sinch.xms.api.MtBatchTextSmsResult;
 import com.sinch.xms.api.ReportType;
-import com.textinca.dev.models.MessageEventForSending.SingleMessageEvent;
+import com.textinca.dev.models.SingleMessageEvent;
 
 public class SinchCanadaSender extends SmsSender  {
 	
