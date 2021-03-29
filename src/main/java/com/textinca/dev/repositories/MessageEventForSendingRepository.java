@@ -1,10 +1,8 @@
 package com.textinca.dev.repositories;
 
 import static org.jooq.impl.DSL.field;
-
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
-
 
 import java.util.List;
 
@@ -17,6 +15,7 @@ import com.textinca.dev.models.CampaignMessageToSend;
 import com.textinca.dev.models.MessageEventForSending;
 import com.textinca.dev.models.SingleMessageEvent;
 
+import static com.textinca.dev.configs.MessageEventsConstans.SENDING_STATUS_PENDING;
 
 @Component
 public class MessageEventForSendingRepository {
@@ -24,10 +23,8 @@ public class MessageEventForSendingRepository {
 	@Autowired
 	private DatabaseConnector dbConnector;
 	
-	public MessageEventForSending getEventsOfCampaingToSendByCampaign(CampaignMessageToSend campaign)
+	public MessageEventForSending getEventsFromCampaign(CampaignMessageToSend campaign)
 	{
-		
-		this.dbConnector = new DatabaseConnector();
 		MessageEventForSending eventsForSending = new MessageEventForSending();
 		
 		eventsForSending.setCompanysCountryPhonePrefix(
@@ -35,7 +32,7 @@ public class MessageEventForSendingRepository {
 		);
 		
 		eventsForSending.setMessageToSend(
-				getOnlyMainTextByCampaign(campaign)
+				campaign.getTextToSend()
 		);
 		
 		eventsForSending.setEvents(
@@ -45,25 +42,6 @@ public class MessageEventForSendingRepository {
 		return eventsForSending ;
 	}
 	
-	private String getOnlyMainTextByCampaign(CampaignMessageToSend campaign)
-	{
-		Query builtQuery = dbConnector.getFactory()
-				.select(field("mainText"))
-				.from(table(name(TablesNames.CAMPAIGN_MESSAGE)))
-				.where(
-						field(TablesNames.CAMPAIGN_MESSAGE+".companyEmailFK")
-						.eq(campaign.getAssociatedCompanyEmail())
-						.and(	
-							field(TablesNames.CAMPAIGN_MESSAGE+".campaignName")
-							.eq(campaign.getCampaignName())	
-						)
-				);
-		return 	dbConnector
-				.getFactory()
-				.fetchOne(builtQuery.getSQL())
-				.into(String.class);
-	}
-	
 	private List<SingleMessageEvent> getSingleMessageEventsFilterBy(String companyEmail, String campaignName)
 	{
 		Query builtQuery = dbConnector.getFactory()
@@ -71,16 +49,17 @@ public class MessageEventForSendingRepository {
 						field("phoneNumberFK")
 						.as("destinationPhoneNumber"),
 						field("code")
-						.as("code")
+						.as("code"),
+						field("shippingDate")
 				)
 				.from(table(name(TablesNames.MESSAGE_EVENT_LOG)))
 				.where(	
-					field(TablesNames.MESSAGE_EVENT_LOG+".companyEmailFK")
-					.eq(companyEmail)
+					field(TablesNames.MESSAGE_EVENT_LOG+".companyEmailFK").eq(companyEmail)
 					.and(	
-						field(TablesNames.MESSAGE_EVENT_LOG+".campaignNameFK")
-						.eq(campaignName)	
-					)
+						field(TablesNames.MESSAGE_EVENT_LOG+".campaignNameFK").eq(campaignName)
+					.and(	
+						field(TablesNames.MESSAGE_EVENT_LOG+".sendingStatus").eq(SENDING_STATUS_PENDING)))
+					
 				);
 		return 	dbConnector
 				.getFactory()

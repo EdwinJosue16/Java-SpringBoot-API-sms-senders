@@ -16,6 +16,7 @@ public class CampaignMessagesConstants {
 	public static final String INTERVAL_BETWEEN_SHIPMENTS_DAILY = "daily";
 	public static final String INTERVAL_BETWEEN_SHIPMENTS_MONTHLY = "monthly";
 	public static final String INTERVAL_BETWEEN_SHIPMENTS_QUARTERLY = "quarterly";
+	public static final String INTERVAL_BETWEEN_SHIPMENTS_ANNUAL = "annual";
 	public static final String INTERVAL_BETWEEN_SHIPMENTS_NONE = "none";
 	
 	//Types of campaigns

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.jooq.DSLContext;
@@ -27,29 +28,27 @@ public class DatabaseConnector {
     protected static final String TESTDB_USER = "root";
     protected static final String TESTDB_PASS = "textinadmin";
     protected static final String TESTDB_URL = "jdbc:mysql://textin-devtest.cn6t8xcmyxcw.us-east-1.rds.amazonaws.com:3306/devtest?useSSL=false&serverTimezone=America/Costa_Rica";
-    
-    public DatabaseConnector()
-    {
+
+    @PostConstruct
+    public void doConnection()
+    {	
     	setDefaultConfigurationValues()
     	.initializeConnection();
+    	System.out.println("-Initialize MySQL Connection-");
     }
     
-    public DatabaseConnector setUserName(String userName)
+    @PreDestroy
+    public void closeConnection()
     {
-    	this.userName = userName;
-    	return this;
-    }
-    
-    public DatabaseConnector setPassword(String password)
-    {
-    	this.password = password;
-    	return this;
-    }
-    
-    public DatabaseConnector setUrl(String url)
-    {
-    	this.url = url;
-    	return this;
+    	try 
+    	{
+			this.mySqlConnection.close();
+	    	System.out.println("-Close MySQL Connection-");
+		} 
+    	catch (SQLException error) 
+    	{
+    		System.out.println("Error while trying closing MySQL Connection: " + error);
+		}
     }
     
     public DSLContext getFactory()
@@ -57,7 +56,7 @@ public class DatabaseConnector {
     	return this.queryFactory;
     }
     
-    public DatabaseConnector setDefaultConfigurationValues()
+    private DatabaseConnector setDefaultConfigurationValues()
     {
     	this.userName = TESTDB_USER;
     	this.password = TESTDB_PASS;
@@ -83,19 +82,6 @@ public class DatabaseConnector {
         }
     }
     
-    @PreDestroy
-    public void closeConnection()
-    {
-    	try 
-    	{
-			this.mySqlConnection.close();
-		} 
-    	catch (SQLException e) 
-    	{
-			e.printStackTrace();
-		}
-    }
-    
     public CallableStatement prepareCall(String sqlStatement)
     {
     	CallableStatement statement;
@@ -103,10 +89,10 @@ public class DatabaseConnector {
     		statement = this.mySqlConnection
     						.prepareCall(sqlStatement);
 		} 
-    	catch (SQLException e) 
+    	catch (SQLException error) 
     	{
     		statement = null;
-			e.printStackTrace();
+            System.out.println("An error has occured while you try preparing statement to "+ url + "Error :" + error);
 		}
     	return statement;
     }

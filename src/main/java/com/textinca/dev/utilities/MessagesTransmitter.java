@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import com.textinca.dev.managers.MessageSenderManager;
 import com.textinca.dev.models.CampaignMessageToSend;
 import com.textinca.dev.models.MessageEventForSending;
-import com.textinca.dev.services.MessageEventsForSendingServie;
+import com.textinca.dev.services.MessageEventsForSendingService;
 
 @Component
 public class MessagesTransmitter {
@@ -15,12 +15,12 @@ public class MessagesTransmitter {
 	MessageSenderManager messageSenderManager;
 	
 	@Autowired
-	MessageEventsForSendingServie messageEventService;
+	MessageEventsForSendingService messageEventService;
 	
 	public void doImmediateSend(CampaignMessageToSend campaign)
 	{
 		MessageEventForSending eventsToSend = messageEventService
-												.getImmediateEventsForSending(campaign);
+												.getEventsForSending(campaign);
 		
 		messageSenderManager.sendMessage(
 					eventsToSend.getCompanysCountryPhonePrefix(), 

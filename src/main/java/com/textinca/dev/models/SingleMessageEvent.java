@@ -1,14 +1,24 @@
 package com.textinca.dev.models;
 
+import java.sql.Timestamp;
+
 public class SingleMessageEvent
 {
 	private String destinationPhoneNumber;
 	private long code;
+	private Timestamp shippingDate;
 	
 	public SingleMessageEvent(String destinationPhoneNumber, long code) 
 	{
 		this.destinationPhoneNumber = destinationPhoneNumber;
 		this.code = code;
+	}
+	
+	public SingleMessageEvent(String destinationPhoneNumber, long code, Timestamp shippingDate) 
+	{
+		this.destinationPhoneNumber = destinationPhoneNumber;
+		this.code = code;
+		this.shippingDate = shippingDate;
 	}
 
 	public String getDestinationPhoneNumber() {
@@ -26,4 +36,13 @@ public class SingleMessageEvent
 	public void setCode(long code) {
 		this.code = code;
 	}
+
+	public Timestamp getShippingDate() {
+		return shippingDate;
+	}
+
+	public void setShippingDate(Timestamp shippingDate) {
+		this.shippingDate = shippingDate;
+	}
+	
 }
