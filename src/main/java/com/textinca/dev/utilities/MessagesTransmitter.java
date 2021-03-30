@@ -17,7 +17,7 @@ public class MessagesTransmitter {
 	@Autowired
 	MessageEventsForSendingService messageEventService;
 	
-	public void doImmediateSend(CampaignMessageToSend campaign)
+	public MessageEventForSending doImmediateSend(CampaignMessageToSend campaign)
 	{
 		MessageEventForSending eventsToSend = messageEventService
 												.getEventsForSending(campaign);
@@ -26,6 +26,8 @@ public class MessagesTransmitter {
 					eventsToSend.getCompanysCountryPhonePrefix(), 
 					eventsToSend
 		);
+		
+		return eventsToSend;
 	}
 	
 }

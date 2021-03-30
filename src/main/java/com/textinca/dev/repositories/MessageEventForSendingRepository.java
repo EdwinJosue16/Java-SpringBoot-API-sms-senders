@@ -4,6 +4,8 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
 
+import java.sql.CallableStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.jooq.Query;
@@ -20,8 +22,33 @@ import static com.textinca.dev.configs.MessageEventsConstans.SENDING_STATUS_PEND
 @Component
 public class MessageEventForSendingRepository {
 	
+	private final static String RESCHEDULE_MESSAGE_EVENTS = "{call RE-SCHEDULE_MESSAGE_EVENTS(?,?)}";
+	
 	@Autowired
 	private DatabaseConnector dbConnector;
+	
+	
+	public int reScheduleCampaign(MessageEventForSending events, String intervalBetweenShipments)
+	{
+		int affectedRows = 0;
+		CallableStatement statement = dbConnector.prepareCall(RESCHEDULE_MESSAGE_EVENTS);
+		if(statement!=null)
+		{
+			try 
+			{
+				statement.setString(0, intervalBetweenShipments);
+				statement.setString(1, events.covertSingleEventsToProcedureParameter());
+				affectedRows = statement.executeUpdate();
+				statement.close();
+			} 
+			catch (SQLException error) 
+			{
+				System.out.println("While you try insert campaign events (re-schedule):" + error.toString());
+				affectedRows = 0;
+			}
+		}	
+		return affectedRows;
+	}
 	
 	public MessageEventForSending getEventsFromCampaign(CampaignMessageToSend campaign)
 	{

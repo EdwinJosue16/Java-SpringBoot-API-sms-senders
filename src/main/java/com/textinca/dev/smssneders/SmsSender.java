@@ -9,7 +9,7 @@ import com.textinca.dev.models.SingleMessageEvent;
 
 @Component
 public abstract class SmsSender {
-	
+	//TODO Cambiar a nombres de los paises respectivos y no su codigo
 	public static final String COSTA_RICA_PREFIX = "506";
 	public static final String HONDURAS_PREFIX = "504";
 	public static final String CANADA_PREFIX = "1";

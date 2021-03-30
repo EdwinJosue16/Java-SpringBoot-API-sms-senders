@@ -13,12 +13,14 @@ import com.textinca.dev.smssneders.TigoHondurasSender;
 public class MessageSenderManager {
 	public void sendMessage(String companysCountryPhonePrefix, MessageEventForSending messageEvent)
 	{
+		//TODO el parametro a recibir debe ser el nombre del pais asociado a la empresa que creo los messagaEvents
 		SmsSender provider = chooseSMSProviderByCountry(companysCountryPhonePrefix);
 		provider.sendSms(messageEvent);
 	}
 	
 	private SmsSender chooseSMSProviderByCountry(String companysCountryPhonePrefix)
 	{
+		//TODO este switch debe ser con base al nombre del pais, ya que el phone prefix no es unico
 		SmsSender provider = null;
 		switch(companysCountryPhonePrefix)
 		{

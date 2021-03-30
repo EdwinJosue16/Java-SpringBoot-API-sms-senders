@@ -9,15 +9,12 @@ public class CampaignMessageToSend {
 	public CampaignMessageToSend()
 	{
 	}
-	
-	
+
 	public CampaignMessageToSend(String associatedCompanyEmail, String campaignName, String textToSend) {
 		this.associatedCompanyEmail = associatedCompanyEmail;
 		this.campaignName = campaignName;
 		this.textToSend = textToSend;
 	}
-
-
 
 	public String getAssociatedCompanyEmail() {
 		return associatedCompanyEmail;
@@ -42,5 +39,5 @@ public class CampaignMessageToSend {
 
 	public void setTextToSend(String textToSend) {
 		this.textToSend = textToSend;
-	}
+	}	
 }

@@ -1,7 +1,13 @@
 package com.textinca.dev.models;
 
+import static com.textinca.dev.configs.CampaignMessagesConstants.JSON_PROPERTY_FOR_LISTNAMES_SP;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
 
 public class MessageEventForSending {
 	
@@ -52,5 +58,10 @@ public class MessageEventForSending {
 
 	public void setCompanysCountryPhonePrefix(String companysCountryPhonePrefix) {
 		this.companysCountryPhonePrefix = companysCountryPhonePrefix;
+	}
+	
+	public String covertSingleEventsToProcedureParameter()
+	{
+		return new Gson().toJson(events);
 	}
 }

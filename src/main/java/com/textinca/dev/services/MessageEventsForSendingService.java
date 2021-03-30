@@ -18,4 +18,9 @@ public class MessageEventsForSendingService {
 		return messageEventRepo.getEventsFromCampaign(campaign);
 	}
 	
+	public boolean reScheduleCampaignEvents(MessageEventForSending events, String intervalBetweenShipments)
+	{
+		return messageEventRepo.reScheduleCampaign(events, intervalBetweenShipments)>0;
+	}
+	
 }

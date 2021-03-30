@@ -11,11 +11,11 @@ import com.sinch.xms.api.ReportType;
 import com.textinca.dev.models.SingleMessageEvent;
 
 public class SinchCanadaSender extends SmsSender  {
-	
-	private static final String SERVICE_PLAN_ID = "PeopleConn_RA";
-	private static final String TOKEN = "008ca0cac06e4c6b8605d90ddc7abb9a";
-	private static final String URL_CALLBACK = "https://www.pconnection.net/Sinch/WS/sinchDLR.php";
-	private static final String SENDER = "24470";
+	//TODO obtener estos valores de la base de datos (la tabla que los contiene es CommunicationChannelSMS)
+	private static final String SERVICE_PLAN_ID = "PeopleConn_RA"; // este seria el username
+	private static final String TOKEN = "008ca0cac06e4c6b8605d90ddc7abb9a"; // este seria el password
+	private static final String URL_CALLBACK = "https://www.pconnection.net/Sinch/WS/sinchDLR.php"; // este seria el dlr
+	private static final String SENDER = "24470"; // este seria el sending path
 	private ApiConnection conn;
 	
 	public SinchCanadaSender() {
@@ -72,7 +72,7 @@ public class SinchCanadaSender extends SmsSender  {
 		
 	private void checkAnswer(MtBatchTextSmsResult batch)
 	{
-		//System.out.println("Successfully sent batch " + batch.toString());
+		//actualizar codigo de estado y estado como enviado cuando se llega a este punto y con base al batch
 	}
 
 }

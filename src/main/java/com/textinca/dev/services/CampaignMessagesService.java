@@ -16,26 +16,15 @@ public class CampaignMessagesService {
 	@Autowired
 	CampaignMessagesRepository campaignsRepo;
 	
-	public void markCampaignAsReviewed(CampaignMessageToSend campaign)
-	{
-		campaignsRepo.markCampaignStatusAsAReviewed(campaign);
-		//TODO HANDLE returned affected-rows
-	}
-	
 	public List<CampaignMessageToSend> getScheduledNonRecurringCampaigns()
 	{
-		return campaignsRepo.getScheduledCampaign(
+		return campaignsRepo.getScheduledCampaigns(
 				SCHEDULE_TYPE_LATER, 
 				EVENT_TYPE_NON_RECURRING, 
 				INTERVAL_BETWEEN_SHIPMENTS_NONE
 			);
 	}
-	
-	public List<CampaignMessageToSend> getAnniversaries()
-	{
-		return getRecurrentCamapigns(INTERVAL_BETWEEN_SHIPMENTS_ANNUAL);
-	}
-	
+		
 	public List<CampaignMessageToSend> getDailyCampaigns()
 	{
 		return getRecurrentCamapigns(INTERVAL_BETWEEN_SHIPMENTS_DAILY);
@@ -57,7 +46,7 @@ public class CampaignMessagesService {
 	
 	private List<CampaignMessageToSend> getRecurrentCamapigns(String interval)
 	{
-		return campaignsRepo.getScheduledCampaign( 
+		return campaignsRepo.getScheduledCampaigns( 
 				SCHEDULE_TYPE_LATER, 
 				EVENT_TYPE_RECURRENT, 
 				interval

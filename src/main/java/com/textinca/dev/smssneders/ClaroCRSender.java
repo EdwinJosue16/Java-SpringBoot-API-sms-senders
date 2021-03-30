@@ -8,7 +8,8 @@ import com.textinca.dev.models.SingleMessageEvent;
 public class ClaroCRSender extends SmsSender {
 	
 	private static final String CLARO_BASE_URL = "https://notificame.claro.cr/api/http/send_to_contact";
-	private static final String CLARO_API_KEY = "cpBWGPqIyqulLihQJpDPAZpmdFhYLMHP";
+	//TODO obtener estos valores de la base de datos (la tabla que los contiene es CommunicationChannelSMS)
+	private static final String CLARO_API_KEY = "cpBWGPqIyqulLihQJpDPAZpmdFhYLMHP"; // esto seria el username en CommunicationChannelSMS, no requiere password
 	
 	public ClaroCRSender()
 	{
@@ -49,7 +50,7 @@ public class ClaroCRSender extends SmsSender {
 	
 	private void checkAnswer(ResponseEntity<String> answer)
 	{
-		//TODO
+		//TODO actualizar el estado de envio de este mensaje a sent y poner el codigo de estado con el mismo valor del code de single message event
 		//System.out.println("************"+answer.toString());
 	}
 }

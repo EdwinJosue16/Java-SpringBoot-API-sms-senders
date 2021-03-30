@@ -1,11 +1,8 @@
 package com.textinca.dev.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +27,7 @@ public class SendMessagesController {
 	@PostMapping("/send-one-message")
 	public MessageEventForSending sendIndividualMessage(@RequestBody CampaignMessageToSend campaignToSend)
 	{
+		//TODO es necesario implementar una manera elegante de enviar un mensaje individual usando el transmitter y los respectivos senders
 		return null;
 	}
 	
@@ -44,12 +42,6 @@ public class SendMessagesController {
 		response.content = campaignToSend;
 		
 		return response.buildResponse();
-	}
-	
-	@GetMapping("/test")
-	public List<CampaignMessageToSend> test()
-	{
-		return campaignRepo.getScheduledCampaignSP("immediate","non-recurring","none");
 	}
 	
 }
