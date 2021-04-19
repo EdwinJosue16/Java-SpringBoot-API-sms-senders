@@ -1,6 +1,7 @@
 package com.textinca.dev.managers;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class MessageReceiverManager {
 	private static int CLOSE_POLL_ANSWER = 2;
 	private static int OPEN_POLL_ANSWER = 3;
 	private static int FIRST_QUESTION = 0;
+	private static String CLOSE_POLL = "close";
 	
 	@Autowired ReceiveMessageRepository receiveRepo;
 	@Autowired MessagesTransmitter transmitter;
@@ -83,13 +85,21 @@ public class MessageReceiverManager {
 			Poll poll = this.receiveRepo.getPoll(keyWord);
 			this.registerAnswer(keyWord, keyWord, phoneNumber, questionToSend);
 			String question = this.receiveRepo.questionTosend(keyWord, questionToSend);
-			
+
 			if(this.isClose(poll.getCloseDate())) {
 				this.sendMessage(poll.getCompanyEmailFK(), poll.getCampaignNameFK(), "La encuesta Cerro", phoneNumber); //Close "Message"
-			}else {
-				this.sendMessage(poll.getCompanyEmailFK(), poll.getCampaignNameFK(), poll.getConfirmationText(), phoneNumber);
-				this.sendMessage(poll.getCompanyEmailFK(), poll.getCampaignNameFK(), question, phoneNumber); //envia primera pregunta de un poll
+			}
+			else if(poll.getType().equals(CLOSE_POLL)) {
+
+				String message = poll.getConfirmationText();
+				message += this.getQuestions(this.receiveRepo.getQuestions(keyWord));
+				this.sendMessage(poll.getCompanyEmailFK(), poll.getCampaignNameFK(), message, phoneNumber); //envia primera pregunta de un poll cerrado y sus opciones
 				this.receiveRepo.addPollMember(poll);
+			}
+			else {
+					this.sendMessage(poll.getCompanyEmailFK(), poll.getCampaignNameFK(), poll.getConfirmationText(), phoneNumber);
+					this.sendMessage(poll.getCompanyEmailFK(), poll.getCampaignNameFK(), question, phoneNumber); //envia primera pregunta de un poll
+					this.receiveRepo.addPollMember(poll);
 			}
 		}else if(this.existRaffle(keyWord)) { 
 			Raffle raffle = this.receiveRepo.getRaffle(keyWord);
@@ -105,6 +115,14 @@ public class MessageReceiverManager {
 		}
 	}
 	
+	private String getQuestions(List<String> questions) {
+		String message = "";
+		for(int i = 0; i < questions.size(); ++i) {
+			message += " " + questions.get(i);
+		}
+		return message;
+	}
+
 	/**
 	 * Register Answer
 	 * Send goodBye text because close Poll just have one answer

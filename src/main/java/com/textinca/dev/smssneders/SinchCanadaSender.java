@@ -82,11 +82,11 @@ public class SinchCanadaSender extends SmsSender  {
 	private void checkAnswer(MtBatchTextSmsResult batch, Long code)
 	{
 		System.out.println("********" + batch.toString());
-		/*if(answer.getStatusCode() == HttpStatus.OK) {
+		if(!batch.canceled()) {
 			this.sendingRepo.updateMessageEventLog(code, SUCCESS); 
 		}else {
 			this.sendingRepo.updateMessageEventLog(code, FAIL); 
-		}*/
+		}
 		//actualizar codigo de estado y estado como enviado cuando se llega a este punto y con base al batch
 	}
 

@@ -14,9 +14,12 @@ import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 import static org.jooq.impl.DSL.table;
 import org.jooq.Record;
+import org.jooq.Result;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.jooq.Query;
 
@@ -209,7 +212,8 @@ public class ReceiveMessageRepository {
 						field("Poll.keyWordPK").as("keyWord"),
 						field("Poll.campaignNameFK"),
 						field("Poll.companyEmailFK"),
-						field("Poll.closeDate")
+						field("Poll.closeDate"),
+						field("Poll.type")
 						)
 				.from(table(name("Poll")))
 				.where(field("Poll.keyWordPK").eq(keyWord));
@@ -374,6 +378,29 @@ public class ReceiveMessageRepository {
 		}
 		return affectedRows;
 	}
+	
+	/**
+	 * Get questions by keyword
+	 * 
+	 * @param keyword
+	 * @return list of questions
+	 */
+	public List<String> getQuestions(String keyWord) {
+		Query builtQuery = dbConnector.getFactory().select(field(name("question"))).from(table(name("Questions")))
+				.where(field("keyWordFK").eq(keyWord));
+
+		Result<Record> result = dbConnector.getFactory().fetch(builtQuery.getSQL());
+
+		List<String> questions = new ArrayList<String>();
+		for (Record values : result) {
+			String question = (String) values.get("question");
+			if (question != null) {
+				questions.add(question);
+			}
+		}
+		return questions;
+	}
+
 	
 	
 }

@@ -10,8 +10,17 @@ public class Poll {
 	private String keyWord;
 	private String confirmationText;
 	private String goodByeText;
+	private String type;
 	private Timestamp closeDate;
 
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	public Timestamp getCloseDate() {
 		return closeDate;
