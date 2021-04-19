@@ -4,6 +4,8 @@ package com.textinca.dev.smssneders;
 import java.io.IOException;
 import java.net.URI;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import com.sinch.xms.ApiConnection;
@@ -11,6 +13,7 @@ import com.sinch.xms.SinchSMSApi;
 import com.sinch.xms.api.MtBatchTextSmsResult;
 import com.sinch.xms.api.ReportType;
 import com.textinca.dev.models.SingleMessageEvent;
+import com.textinca.dev.repositories.MessageEventForSendingRepository;
 
 @Component
 public class SinchCanadaSender extends SmsSender  {
@@ -20,6 +23,8 @@ public class SinchCanadaSender extends SmsSender  {
 	private static final String URL_CALLBACK = "https://www.pconnection.net/Sinch/WS/sinchDLR.php"; // este seria el dlr
 	private static final String SENDER = "24470"; // este seria el sending path
 	private ApiConnection conn;
+	
+	@Autowired MessageEventForSendingRepository sendingRepo;
 	
 	public SinchCanadaSender() {
 		super();
@@ -65,7 +70,8 @@ public class SinchCanadaSender extends SmsSender  {
 			                  .deliveryReport(ReportType.FULL)
 			                  .callbackUrl(URI.create(URL_CALLBACK))
 			                  .build());
-			checkAnswer(batch);
+			this.sendingRepo.updateMessageEventLog(event.getCode(), SENT); 
+			checkAnswer(batch, event.getCode());
 		}
 		catch(Exception error)
 		{
@@ -73,9 +79,14 @@ public class SinchCanadaSender extends SmsSender  {
 		}
 	}
 		
-	private void checkAnswer(MtBatchTextSmsResult batch)
+	private void checkAnswer(MtBatchTextSmsResult batch, Long code)
 	{
 		System.out.println("********" + batch.toString());
+		/*if(answer.getStatusCode() == HttpStatus.OK) {
+			this.sendingRepo.updateMessageEventLog(code, SUCCESS); 
+		}else {
+			this.sendingRepo.updateMessageEventLog(code, FAIL); 
+		}*/
 		//actualizar codigo de estado y estado como enviado cuando se llega a este punto y con base al batch
 	}
 
