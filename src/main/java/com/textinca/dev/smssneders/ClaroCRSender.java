@@ -1,15 +1,21 @@
 package com.textinca.dev.smssneders;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import com.textinca.dev.models.SingleMessageEvent;
+import com.textinca.dev.repositories.MessageEventForSendingRepository;
 
+@Component
 public class ClaroCRSender extends SmsSender {
 	
 	private static final String CLARO_BASE_URL = "https://notificame.claro.cr/api/http/send_to_contact";
 	//TODO obtener estos valores de la base de datos (la tabla que los contiene es CommunicationChannelSMS)
-	private static final String CLARO_API_KEY = "cpBWGPqIyqulLihQJpDPAZpmdFhYLMHP"; // esto seria el username en CommunicationChannelSMS, no requiere password
+	
+	@Autowired MessageEventForSendingRepository sendingRepo;
 	
 	public ClaroCRSender()
 	{
@@ -27,7 +33,9 @@ public class ClaroCRSender extends SmsSender {
 											null, //headers are not necessary
 											String.class
 										);
-			checkAnswer(answer);
+			//Mensaje enviado pero no entregado
+			this.sendingRepo.updateMessageEventLog(event.getCode(), SENT); 
+			checkAnswer(answer, event.getCode());
 		}
 		catch(Exception error)
 		{
@@ -48,9 +56,16 @@ public class ClaroCRSender extends SmsSender {
 		return url;
 	}
 	
-	private void checkAnswer(ResponseEntity<String> answer)
+	private void checkAnswer(ResponseEntity<String> answer, Long code)
 	{
+		//Si se recibe el codigo correcto de entrega se actualiza a success sino a fail
 		//TODO actualizar el estado de envio de este mensaje a sent y poner el codigo de estado con el mismo valor del code de single message event
-		//System.out.println("************"+answer.toString());
+		if(answer.getStatusCode() == HttpStatus.OK) {
+			this.sendingRepo.updateMessageEventLog(code, SUCCESS); 
+		}else {
+			this.sendingRepo.updateMessageEventLog(code, FAIL); 
+		}
+	    System.out.println("************"+answer.toString());
 	}
+	
 }

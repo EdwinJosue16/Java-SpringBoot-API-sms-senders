@@ -4,12 +4,15 @@ package com.textinca.dev.smssneders;
 import java.io.IOException;
 import java.net.URI;
 
+import org.springframework.stereotype.Component;
+
 import com.sinch.xms.ApiConnection;
 import com.sinch.xms.SinchSMSApi;
 import com.sinch.xms.api.MtBatchTextSmsResult;
 import com.sinch.xms.api.ReportType;
 import com.textinca.dev.models.SingleMessageEvent;
 
+@Component
 public class SinchCanadaSender extends SmsSender  {
 	//TODO obtener estos valores de la base de datos (la tabla que los contiene es CommunicationChannelSMS)
 	private static final String SERVICE_PLAN_ID = "PeopleConn_RA"; // este seria el username
@@ -72,6 +75,7 @@ public class SinchCanadaSender extends SmsSender  {
 		
 	private void checkAnswer(MtBatchTextSmsResult batch)
 	{
+		System.out.println("********" + batch.toString());
 		//actualizar codigo de estado y estado como enviado cuando se llega a este punto y con base al batch
 	}
 

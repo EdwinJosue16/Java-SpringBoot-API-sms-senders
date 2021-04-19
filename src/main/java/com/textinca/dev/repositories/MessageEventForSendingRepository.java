@@ -27,6 +27,10 @@ public class MessageEventForSendingRepository {
 	@Autowired
 	private DatabaseConnector dbConnector;
 	
+	public  DatabaseConnector getConnection() {
+		return dbConnector;
+	}
+	
 	
 	public int reScheduleCampaign(MessageEventForSending events, String intervalBetweenShipments)
 	{
@@ -109,5 +113,19 @@ public class MessageEventForSendingRepository {
 				.getFactory()
 				.fetchOne(builtQuery.getSQL())
 				.into(String.class);
+	}
+	
+	public int updateMessageEventLog(long code, String status) {
+		int affectedRows = 0;
+		Query builtQuery = dbConnector.getFactory().update(table(name(TablesNames.MESSAGE_EVENT_LOG)))
+				.set(field(name("sendingStatus")), status)
+				.where(field("code").eq(code));
+		try {
+			affectedRows = dbConnector.getFactory().execute(builtQuery);
+		} catch (Exception error) {
+			affectedRows = 0;
+			System.out.println("An error has occured while you try to update message event log: " + error.toString());
+		}
+		return affectedRows;
 	}
 }

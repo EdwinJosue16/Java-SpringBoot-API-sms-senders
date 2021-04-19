@@ -3,7 +3,7 @@ package com.textinca.dev.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -34,6 +34,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
         http
         .authorizeRequests()
+        .antMatchers(HttpMethod.POST, "/receiving-side/claro-cr").permitAll() // permitir solamente desde donde se envia el callback
+        .antMatchers(HttpMethod.POST, "/receiving-side/tigo-hn").permitAll()
+        .antMatchers(HttpMethod.POST, "/receiving-side/sinch-ca").permitAll()
         .anyRequest()
         .authenticated()
         .and()

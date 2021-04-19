@@ -2,22 +2,27 @@ package com.textinca.dev.smssneders;
 
 import java.util.Base64;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import com.textinca.dev.models.SingleMessageEvent;
 import com.textinca.dev.models.TigoMassiveMessagesFormat;
+import com.textinca.dev.repositories.MessageEventForSendingRepository;
 
+@Component
 public class TigoHondurasSender extends SmsSender{
 	
 	private static final String AUTHORIZATION_TYPE = "Authorization";
 	private static final int NON_FLASH_FORMAT = 1;
 	private static final String TIGO_HN_POST_BASE_URL = "https://apismsi.aldeamo.com/SmsiWS/smsSendPost/";
 
-	
+	@Autowired MessageEventForSendingRepository sendingRepo;
 	
 	public TigoHondurasSender() 
 	{
@@ -36,7 +41,9 @@ public class TigoHondurasSender extends SmsSender{
 						request, 
 						String.class
 					);
-			checkAnswer(answer);
+			
+			this.sendingRepo.updateMessageEventLog(event.getCode(), SENT); 
+			checkAnswer(answer, event.getCode());
 		}
 		catch(Exception error)
 		{
@@ -71,8 +78,15 @@ public class TigoHondurasSender extends SmsSender{
 		return jsonRequest.toJSON();
 	}
 	
-	private void checkAnswer(ResponseEntity <String> answer)
+	private void checkAnswer(ResponseEntity <String> answer, Long code)
 	{
+		if(answer.getStatusCode() == HttpStatus.OK) {
+			this.sendingRepo.updateMessageEventLog(code, SUCCESS); 
+		}else {
+			this.sendingRepo.updateMessageEventLog(code, FAIL); 
+		}
+		System.out.println("******" + answer.toString());
+		
 		//TODO tigo responde de inmediato un json con un codigo para el mensaje y su estado, actualizar estos valores en la db
 	}
 }
