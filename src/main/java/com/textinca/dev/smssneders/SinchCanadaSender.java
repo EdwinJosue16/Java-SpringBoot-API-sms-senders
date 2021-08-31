@@ -18,10 +18,10 @@ import com.textinca.dev.repositories.MessageEventForSendingRepository;
 @Component
 public class SinchCanadaSender extends SmsSender  {
 	//TODO obtener estos valores de la base de datos (la tabla que los contiene es CommunicationChannelSMS)
-	private static final String SERVICE_PLAN_ID = "PeopleConn_RA"; // este seria el username
-	private static final String TOKEN = "008ca0cac06e4c6b8605d90ddc7abb9a"; // este seria el password
+	private static final String SERVICE_PLAN_ID = "ServicePlanId"; // este seria el username
+	private static final String TOKEN = "SomeSichToken"; // este seria el password
 	private static final String URL_CALLBACK = "https://www.pconnection.net/Sinch/WS/sinchDLR.php"; // este seria el dlr
-	private static final String SENDER = "24470"; // este seria el sending path
+	private static final String SENDER = "56732"; // este seria el sending path
 	private ApiConnection conn;
 	
 	@Autowired MessageEventForSendingRepository sendingRepo;
