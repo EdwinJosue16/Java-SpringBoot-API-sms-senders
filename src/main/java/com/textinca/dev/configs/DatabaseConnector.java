@@ -26,8 +26,8 @@ public class DatabaseConnector {
     protected Settings settings; 
     
     protected static final String TESTDB_USER = "root";
-    protected static final String TESTDB_PASS = "textinadmin";
-    protected static final String TESTDB_URL = "jdbc:mysql://textin-devtest.cn6t8xcmyxcw.us-east-1.rds.amazonaws.com:3306/devtest?useSSL=false&serverTimezone=America/Costa_Rica";
+    protected static final String TESTDB_PASS = "password";
+    protected static final String TESTDB_URL = "jdbc:mysql://domain/dbname?useSSL=false&serverTimezone=America/Costa_Rica";
 
     @PostConstruct
     public void doConnection()
