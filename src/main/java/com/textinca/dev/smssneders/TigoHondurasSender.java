@@ -54,7 +54,7 @@ public class TigoHondurasSender extends SmsSender{
 	private HttpEntity<String> buildRequest(SingleMessageEvent event, String messageToSend)
 	{
 		String jsonRequest = builBodyOfRequest(event, messageToSend);
-		String usernameAndPassword ="people"+":"+"Geminis1980$"; //TODO obtener estos valores de la base de datos (la tabla que los contiene es CommunicationChannelSMS)
+		String usernameAndPassword ="user"+":"+"password"; //TODO obtener estos valores de la base de datos (la tabla que los contiene es CommunicationChannelSMS)
 		//hay un username and password para cada numero de tigo, se puede elegir uno aletorio para enviar los mensajes,
 		HttpHeaders headers = new HttpHeaders();
 		
