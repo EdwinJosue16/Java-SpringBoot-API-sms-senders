@@ -24,7 +24,7 @@ public abstract class SmsSender {
 	public static final String COSTA_RICA_PREFIX = "506";
 	public static final String HONDURAS_PREFIX = "504";
 	public static final String CANADA_PREFIX = "1";
-	public static final String CLARO_API_KEY = "cpBWGPqIyqulLihQJpDPAZpmdFhYLMHP"; // esto seria el username en CommunicationChannelSMS, no requiere password
+	public static final String CLARO_API_KEY = "SomeSecretKey"; // esto seria el username en CommunicationChannelSMS, no requiere password
 	public static final String SUCCESS = "success"; //mensaje enviado por claro entregado
 	public static final String FAIL = "fail"; //mensaje fallido
 	public static final String SENT = "sent"; //mensaje enviado por nosotros pero no se sabe si se entrego
